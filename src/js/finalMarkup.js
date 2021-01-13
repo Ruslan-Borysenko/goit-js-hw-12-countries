@@ -9,7 +9,8 @@ import {
 } from './changeMarkup';
 import './notifications.js';
 import { info, error } from '@pnotify/core/dist/PNotify.js';
-
+import { Spinner } from 'spin.js';
+import { spinner, opts } from './spinner';
 let debounce = require('lodash.debounce');
 
 createDOM();
@@ -21,32 +22,45 @@ refs.input.addEventListener('blur', clearMarkup);
 export default function finalMarkup() {
   let searchQuery = refs.input.value;
 
-  if (searchQuery === '' || searchQuery === ' ') {
+  if (searchQuery.trim() === '') {
     ulClear();
     return;
   }
 
-  fetchCountries(searchQuery).then(promise => {
-    if (promise.length > 10) {
-      ulClear();
-      return info(
-        'Too many matches found. Please enter a more specific query!',
-      );
-    }
-    if (promise.length > 1 && promise.length <= 10) {
-      ulClear();
-      let countries = { countries: promise.map(country => country.name) };
-      makeMarkupCountries(countries);
-    }
-    if (promise.length === 1) {
-      ulClear();
-      let [country] = [...promise];
-      console.log(country);
-      makeMarkupCountry(country);
-    }
-    if (promise.status === 404) {
-      clearMarkup();
-      error('There is not such country. Try another one.');
-    }
-  });
+  spinner.spin(refs.body);
+  fetchCountries(searchQuery)
+    .then(promise => {
+      console.log(promise);
+      console.log(searchQuery);
+      if (promise.length > 10) {
+        ulClear();
+        return info(
+          'Too many matches found. Please enter a more specific query!',
+        );
+      }
+      if (promise.length > 1 && promise.length <= 10) {
+        let country = promise.find(country => country.name === searchQuery);
+        ulClear();
+        if (country) {
+          makeMarkupCountry(country);
+        } else {
+          let countries = promise.map(country => country.name);
+          console.log(countries);
+          makeMarkupCountries(countries);
+        }
+      }
+      if (promise.length === 1) {
+        ulClear();
+        let [country] = [...promise];
+        console.log(country);
+        makeMarkupCountry(country);
+      }
+      if (promise.status === 404) {
+        clearMarkup();
+        error('There is not such country. Try another one.');
+      }
+    })
+    .finally(() => {
+      spinner.stop();
+    });
 }
