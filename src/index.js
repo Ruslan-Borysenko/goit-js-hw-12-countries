@@ -1,3 +1,2 @@
-import './styles.css';
-import './js/baseMarkup';
-import finalMarkup from './js/finalMarkup';
+import './search-countries/sass/style.scss';
+import './search-countries/js/search-country.js';
