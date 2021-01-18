@@ -2,7 +2,7 @@ import refs from './refs.js';
 const { body } = refs;
 
 // create static elements for DOM
-const searchBox = document.createElement('div');
+export const searchBox = document.createElement('div');
 searchBox.classList.add('search-box');
 
 export const span = document.createElement('span');
