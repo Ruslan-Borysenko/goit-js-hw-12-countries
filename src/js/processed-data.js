@@ -2,6 +2,7 @@ import { searchInput, span } from '../js/static-markup';
 import fetchCountries from '../js/fetchCountries';
 import {
   clearMarkup,
+  clearUl,
   createCountriesList,
   createCountryList,
 } from '../js/dynamic-markup';
@@ -67,5 +68,5 @@ export const searchCountry = () => {
 
 //events
 searchInput.addEventListener('input', debounce(searchCountry, 500));
-searchInput.addEventListener('blur', clearMarkup);
+searchInput.addEventListener('blur', clearUl);
 span.addEventListener('click', clearMarkup);

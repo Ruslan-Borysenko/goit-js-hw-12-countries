@@ -10,6 +10,10 @@ export const clearMarkup = () => {
   searchInput.value = '';
 };
 
+export const clearUl = () => {
+  searchInput.value = '';
+};
+
 export const createCountriesList = countriesInfo => {
   const markup = countriesTemplate(countriesInfo);
   ul.insertAdjacentHTML('beforeend', markup);
