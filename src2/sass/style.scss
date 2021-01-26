@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,400i,700');
-
 html,
 body {
   width: 100%;
@@ -108,7 +107,7 @@ ul {
   position: absolute;
   margin-left: 0px;
   margin-right: 0px;
-  top: 160px;
+  top: 130px;
 }
 
 .wrap {
@@ -138,6 +137,11 @@ ul {
 }
 
 .title {
+  font-weight: bold;
+}
+
+.countries .item {
+  font-size: 16px;
   font-weight: bold;
 }
 

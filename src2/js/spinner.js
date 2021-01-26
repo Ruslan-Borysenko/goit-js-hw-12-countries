@@ -1,7 +1,6 @@
 import { Spinner } from 'spin.js';
-import { searchBox } from './static-markup';
 
-let opts = {
+const opts = {
   lines: 13, // The number of lines to draw
   length: 10, // The length of each line
   width: 10, // The line thickness
@@ -22,5 +21,4 @@ let opts = {
   position: 'absolute', // Element positioning
 };
 
-export let target = searchBox;
-export let spinner = new Spinner(opts);
+export default new Spinner(opts);

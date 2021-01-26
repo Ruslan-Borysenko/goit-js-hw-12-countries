@@ -2,39 +2,38 @@ import { searchInput, span } from '../js/static-markup';
 import fetchCountries from '../js/fetchCountries';
 import {
   clearMarkup,
-  clearUl,
+  clearInput,
   createCountriesList,
   createCountryList,
 } from '../js/dynamic-markup';
 import { myError } from './notifications';
-import { spinner, target } from './spinner';
-let debounce = require('lodash.debounce');
+import spinner from './spinner';
+import { searchBox } from './static-markup';
+import debounce from 'lodash.debounce';
 
 // functions
 const spinnerRun = () => {
-  spinner.spin(target);
+  spinner.spin(searchBox);
 };
 
 const spinnerStop = () => {
-  setTimeout(() => {
-    spinner.stop();
-  }, 500);
+  spinner.stop();
 };
 
 export const searchCountry = () => {
-  let searchQuery = searchInput.value;
-  clearMarkup();
+  const searchQuery = searchInput.value;
 
-  if (searchQuery.trim() === '') {
+  if (!searchQuery.trim()) {
     return;
   }
 
+  spinnerRun();
   fetchCountries(searchQuery)
     .then(promise => {
-      spinnerRun();
       if (promise.length > 10) {
+        clearInput();
         myError('Too many matches found. Please enter a more specific query!');
-        spinnerStop();
+        // spinnerStop();
         return;
       }
       if (promise.length > 1 && promise.length <= 10) {
@@ -42,31 +41,33 @@ export const searchCountry = () => {
         clearMarkup();
         if (country) {
           createCountryList(country);
-          spinnerStop();
+          // spinnerStop();
           return;
         } else {
           let countries = promise.map(country => country.name);
           console.log(countries);
           createCountriesList(countries);
-          spinnerStop();
+          // spinnerStop();
           return;
         }
       }
       if (promise.length === 1) {
         clearMarkup();
+        clearInput();
         let [country] = [...promise];
         createCountryList(country);
-        spinnerStop();
+        // spinnerStop();
         return;
       }
     })
     .catch(error => {
       myError('Nothing found. \n Repeat the request!');
-      spinnerStop();
-    });
+      // spinnerStop();
+    })
+    .finally(() => spinnerStop());
 };
 
 //events
 searchInput.addEventListener('input', debounce(searchCountry, 500));
-searchInput.addEventListener('blur', clearUl);
+searchInput.addEventListener('blur', clearInput);
 span.addEventListener('click', clearMarkup);

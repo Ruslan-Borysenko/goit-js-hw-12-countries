@@ -1,5 +1,5 @@
 import { searchInput, ul } from '../js/static-markup';
-import refs from '../js/refs.js';
+// import refs from '../js/refs.js';
 import countriesTemplate from '../templates/countries.hbs';
 import countryTemplate from '../templates/country.hbs';
 
@@ -7,10 +7,9 @@ import countryTemplate from '../templates/country.hbs';
 
 export const clearMarkup = () => {
   ul.textContent = '';
-  searchInput.value = '';
 };
 
-export const clearUl = () => {
+export const clearInput = () => {
   searchInput.value = '';
 };
 
